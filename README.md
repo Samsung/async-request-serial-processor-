@@ -13,6 +13,10 @@ Imagine asynchronous requests are coming in a queue and consumer has to process 
 
 Internally it maintains pool of worker thread, and assigngs a worker thred to incoming request, Each working thread will have it own internal queue, where incoming request from a given key will be appened. In order word it creates a stickyness between worker thread and key. The stickyness is only up to limited time, if there is no new request since last request is received, the worker thread is released back to thread pool. The pool will then reassign the worker thread to new incoming request.
 
+### Diagram
+
+![diagram](https://github.sec.samsung.net/arun-y/async-request-serializer/raw/master/diagram.png)
+
 ## Getting Started (From source)
 
 1. Clone this project
