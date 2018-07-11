@@ -7,6 +7,11 @@ A library to serially process asyncronous request.
 > asynchronously and can be processed parrallely with a condition that request with certain criteria (e.g. request userId) to be 
 > processed in serially. The measured performance shows good improvement over single threaded processing on a multicore machines.
 
+## Use case
+
+Imagine asynchronous requests are coming in a queue and consumer has to process all the requests. Also there is a restriction that request which belongs to a single key (say a user id) must be processed in order they arrived in a queue. In order to fulfill this serial processing requirement, one can choose to have a single thread consumer, which will guarnatee serial processing order. However this will not be efficient since requests which belong to differnent key, can still be processed in parallel. This library is exactly meant for doing it. 
+
+Internally it maintains pool of worker thread, and assigngs a worker thred to incoming request, Each working thread will have it own internal queue, where incoming request from a given key will be appened. In order word it creates a stickyness between worker thread and key. The stickyness is only up to limited time, if there is no new request since last request is received, the worker thread is released back to thread pool. The pool will then reassign the worker thread to new incoming request.
 
 ## Getting Started (From source)
 
