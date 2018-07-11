@@ -1,4 +1,4 @@
-# async-request-serializer
+# async-request-serial-processor
 
 A library to serially process asyncronous request. 
 
