@@ -15,7 +15,7 @@ Internally it maintains pool of worker thread, and assigngs a worker thred to in
 
 ### Diagram
 
-![diagram](https://github.sec.samsung.net/arun-y/async-request-serializer/raw/master/diagram.png)
+![diagram](diagram.png)
 
 ## Getting Started (From source)
 
