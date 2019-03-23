@@ -15,23 +15,60 @@
  */
 package com.samsung.lib.requestserializer;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-
-@Component
 public class AsyncRequestSerializerConfig {
+  final int submitRetryCount;
+  final int submitRetryDelay;
+  final int workerThreadPoolSize;
+  final int localRequestQueueTimeOut;
 
-  @Value("#{config['asyncrequestserializer.submit.retry-count'] ?: '500'}")
-  public Integer submitRetryCount;
+  private AsyncRequestSerializerConfig(
+      int submitRetryCount,
+      int submitRetryDelay,
+      int workerThreadPoolSize,
+      int localRequestQueueTimeOut
+  ) {
+    this.submitRetryCount = submitRetryCount;
+    this.submitRetryDelay = submitRetryDelay;
+    this.workerThreadPoolSize = workerThreadPoolSize;
+    this.localRequestQueueTimeOut = localRequestQueueTimeOut;
 
-  @Value("#{config['asyncrequestserializer.submit.retry-delay'] ?: '150'}")
-  public Integer submitRetryDelay;
+  }
 
-  @Value("#{config['asyncrequestserializer.pool.size'] ?: '32'}")
-  public Integer workerThreadPoolSize;
+  public static class Builder {
+    private int submitRetryCount = 500;
+    private int submitRetryDelay = 150;
+    private int workerThreadPoolSize = 32;
+    private int localRequestQueueTimeOut = 100;
 
-  @Value(value = "#{config['asyncreqserializer.poolableworkerthread.timeout'] ?: '100'}")
-  public Integer localRequestQueueTimeOut;
+    public Builder setSubmitRetryCount(int submitRetryCount) {
+      this.submitRetryCount = submitRetryCount;
+      return this;
+    }
+
+    public Builder setSubmitRetryDelay(int submitRetryDelay) {
+      this.submitRetryDelay = submitRetryDelay;
+      return this;
+    }
+
+    public Builder setWorkerThreadPoolSize(int workerThreadPoolSize) {
+      this.workerThreadPoolSize = workerThreadPoolSize;
+      return this;
+    }
+
+    public Builder setLocalRequestQueueTimeOut(int localRequestQueueTimeOut) {
+      this.localRequestQueueTimeOut = localRequestQueueTimeOut;
+      return this;
+    }
+
+    public AsyncRequestSerializerConfig build() {
+      return new AsyncRequestSerializerConfig(
+          submitRetryCount,
+          submitRetryDelay,
+          workerThreadPoolSize,
+          localRequestQueueTimeOut
+      );
+    }
+  }
 
 }

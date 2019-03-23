@@ -20,17 +20,21 @@ Internally it maintains pool of worker thread, and assigngs a worker thred to in
 ## Getting Started (From source)
 
 1. Clone this project
-2. Edit src/main/resource/requestserializer.config as per your requirement
-3. Build jar, mvn clean package
-4. Include  async-request-serializer-1.0-SNAPSHOT.jar in your project
+2. Build jar, `mvn clean package`
+3. Include  async-request-serializer-1.0-SNAPSHOT.jar in your project
 
 
 ## API documentation
 
 The primary classes in order to use this library is as follows, currently the library is using Spring framework (we are planning to drop that dependency though):
 
-1. Autowire the AsyncRequestSerializer instance, this the entry point for this library. 
-`@Autowired private AsyncRequestSerializer<T> asyncRequestSerializer` //replace T with the class representing a return class type.
+1. Create the AsyncRequestSerializer instance, this the entry point for this library. 
+```java
+//replace T with the class representing a return class type.
+private AsyncRequestSerializer<T> asyncRequestSerializer =                     
+    new AsyncRequestSerializer(new AsyncRequestSerializerConfig.Builder.build());
+```
+
 2. Extend Work<T> class which has single function `public T call()`, this will be your actual logic that you want to run.
 3. Submit your job by calling `asyncRequestSerializer.submit(String key, Work<T> work)`, this is non-blocking call and return Future<T>
 4. From returned future object you can get result of your processing.  
@@ -51,7 +55,12 @@ class MyWork implements Work<MyResponse> {
   }
 }
 
-@Autowired private AsyncRequestSerializer<> asyncRequestSerializer;
+private AsyncRequestSerializer<MyResponse> asyncRequestSerializer = new AsyncRequestSerializer<>(
+    new AsyncRequestSerializerConfig
+        .Builder()
+        .setWorkerThreadPoolSize(8)
+        .build());
+
 
 //create your work class
 Work<MyResponse> work = new MyWork();
