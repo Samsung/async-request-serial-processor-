@@ -18,15 +18,9 @@ package com.samsung.lib.requestserializer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import com.samsung.lib.requestserializer.AsyncRequestSerializer;
-
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -42,17 +36,13 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@ContextConfiguration("/async-test-context.xml")
-@RunWith(SpringJUnit4ClassRunner.class)
 public class AsyncRequestSerializerTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AsyncRequestSerializerTest.class);
 
-  @Autowired
-  AsyncRequestSerializer<Integer> asyncRequestSerializer;
+  private AsyncRequestSerializer<Integer> asyncRequestSerializer;
 
-  @Autowired
-  AsyncRequestSerializer<StatisiticsWork.ScoreStat> asyncRequestSerializerStat;
+  private AsyncRequestSerializer<StatisiticsWork.ScoreStat> asyncRequestSerializerStat;
 
   private final ExecutorService ex = Executors.newCachedThreadPool();
 
@@ -62,6 +52,18 @@ public class AsyncRequestSerializerTest {
   private static final int USER_COUNT = 100;
   private static final double ERROR_TOLERANCE = 0.1;
   private static final int MAX_SCORE = 100;
+
+  public AsyncRequestSerializerTest() {
+    asyncRequestSerializer = new AsyncRequestSerializer<>(
+        new AsyncRequestSerializerConfig
+            .Builder()
+            .setWorkerThreadPoolSize(8)
+            .build()
+    );
+    asyncRequestSerializerStat = new AsyncRequestSerializer<>(
+        new AsyncRequestSerializerConfig.Builder().build()
+    );
+  }
 
 
   // @Test

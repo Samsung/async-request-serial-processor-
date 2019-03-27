@@ -17,13 +17,9 @@ package com.samsung.lib.requestserializer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 import java.util.concurrent.Future;
-
-import javax.annotation.PostConstruct;
 
 
 /**
@@ -37,18 +33,16 @@ import javax.annotation.PostConstruct;
  * @author arun.y
  *
  */
-@Component
 public class AsyncRequestSerializer<T> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AsyncRequestSerializer.class);
 
   private PoolableWorkerThreadPool<T> poolableWorkerThreadPool;
 
-  @Autowired
   private AsyncRequestSerializerConfig asyncRequestSerializerConfig;
 
-  @PostConstruct
-  public void init() {
+  public AsyncRequestSerializer(AsyncRequestSerializerConfig config) {
+    this.asyncRequestSerializerConfig = config;
     LOGGER.debug("Initialized AsyncRequestSerializer");
     poolableWorkerThreadPool = new PoolableWorkerThreadPool<>(asyncRequestSerializerConfig);
     LOGGER.debug("Initialized AsyncRequestSerializer - [OK]");
