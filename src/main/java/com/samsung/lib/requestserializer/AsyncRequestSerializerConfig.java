@@ -22,17 +22,11 @@ public class AsyncRequestSerializerConfig {
   final int workerThreadPoolSize;
   final int localRequestQueueTimeOut;
 
-  private AsyncRequestSerializerConfig(
-      int submitRetryCount,
-      int submitRetryDelay,
-      int workerThreadPoolSize,
-      int localRequestQueueTimeOut
-  ) {
-    this.submitRetryCount = submitRetryCount;
-    this.submitRetryDelay = submitRetryDelay;
-    this.workerThreadPoolSize = workerThreadPoolSize;
-    this.localRequestQueueTimeOut = localRequestQueueTimeOut;
-
+  private AsyncRequestSerializerConfig(Builder builder) {
+    this.submitRetryCount = builder.submitRetryCount;
+    this.submitRetryDelay = builder.submitRetryDelay;
+    this.workerThreadPoolSize = builder.workerThreadPoolSize;
+    this.localRequestQueueTimeOut = builder.localRequestQueueTimeOut;
   }
 
   public static class Builder {
@@ -62,12 +56,7 @@ public class AsyncRequestSerializerConfig {
     }
 
     public AsyncRequestSerializerConfig build() {
-      return new AsyncRequestSerializerConfig(
-          submitRetryCount,
-          submitRetryDelay,
-          workerThreadPoolSize,
-          localRequestQueueTimeOut
-      );
+      return new AsyncRequestSerializerConfig(this);
     }
   }
 
